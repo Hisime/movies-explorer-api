@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="80c90e47-9039-452d-a42d-871a2770c00c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +44,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.standard": "",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "actions.on.save"
+    "settings.editor.selected.configurable": "sshConsole"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -82,7 +82,7 @@
       <option name="presentableId" value="Default" />
       <updated>1686845630302</updated>
       <workItem from="1686845631822" duration="645000" />
-      <workItem from="1686850112152" duration="5566000" />
+      <workItem from="1686850112152" duration="8200000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <created>1686850532398</created>
@@ -98,7 +98,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686855924182</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Adds domain">
+      <created>1686856121164</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1686856121164</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -108,7 +115,8 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Init" />
     <MESSAGE value="add backend" />
-    <option name="LAST_COMMIT_MESSAGE" value="add backend" />
+    <MESSAGE value="Adds domain" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adds domain" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
