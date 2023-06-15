@@ -25,7 +25,12 @@ const app = express();
 app.use(cors({
   credentials: true,
   origin: [
+    'https://praktikum.tk',
+    'http://praktikum.tk',
+    'https://hisime.movies.nomoredomains.rocks',
+    'http://hisime.movies.nomoredomains.rocks',
     'http://localhost:3000',
+    'http://localhost:3001',
   ],
 }));
 app.use(helmet());
