@@ -9,7 +9,6 @@ const {
 router.get('/movies', getMovies);
 router.post('/movies', celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
     link: Joi.string().required().pattern(/^https?:\/\/(?:www\.)?[a-zA-Z0-9а-яА-Я-._~:/?#[\]@!$&'()*+,;=]+/im),
     country: Joi.string().required(),
     director: Joi.string().required(),
