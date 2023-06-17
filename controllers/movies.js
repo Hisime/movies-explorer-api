@@ -48,7 +48,7 @@ module.exports.deleteMovie = (req, res, next) => {
     .populate('owner')
     .orFail(new Error('NotValidId'))
     .then((movie) => {
-      if (userId === movie.owner.id) {
+      if (userId === movie.owner.id.toString()) {
         Movie.findByIdAndRemove(movieId)
           .then((removedMovie) => res.send(removedMovie));
       } else {
