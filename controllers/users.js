@@ -3,22 +3,24 @@ const User = require('../models/user');
 const {
   VALIDATION_ERROR,
   INVALID_ID_ERROR,
+  USER_NOT_FOUND_ERROR_MESSAGE,
+  NOT_VALID_ID_ERROR_MESSAGE, SALT_ROUNDS, DUPLICATE_USER_ERROR_MESSAGE,
+  WRONG_CREDENTIALS_ERROR_MESSAGE, JWT_COOKIE_NAME, CREATED_STATUS_CODE, DUPLICATE_USER_ERROR_CODE,
+  JWT_DURATION_SECONDS,
 } = require('../utils/utils');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
 const ConflictError = require('../errors/conflict-err');
 const AuthError = require('../errors/auth-err');
 
-const USER_NOT_FOUND_ERROR_MESSAGE = 'Запрашиваемый пользователь не найден';
-const SALT_ROUNDS = 10;
 const { getJwtToken } = require('../utils/jwt');
 
 module.exports.getUser = (req, res, next) => {
   User.findById(req.user.id)
-    .orFail(new Error('NotValidId'))
+    .orFail(new Error(NOT_VALID_ID_ERROR_MESSAGE))
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err.message === 'NotValidId') {
+      if (err.message === NOT_VALID_ID_ERROR_MESSAGE) {
         next(new NotFoundError(USER_NOT_FOUND_ERROR_MESSAGE));
       } else if (err.name === INVALID_ID_ERROR) {
         next(new BadRequestError(err.message));
@@ -37,11 +39,11 @@ module.exports.updateProfile = (req, res, next) => {
     new: true,
     runValidators: true,
   })
-    .orFail(new Error('NotValidId'))
+    .orFail(new Error(NOT_VALID_ID_ERROR_MESSAGE))
     .then((user) => res.send(user))
 
     .catch((err) => {
-      if (err.message === 'NotValidId') {
+      if (err.message === NOT_VALID_ID_ERROR_MESSAGE) {
         next(new NotFoundError(USER_NOT_FOUND_ERROR_MESSAGE));
       } else if ([VALIDATION_ERROR, INVALID_ID_ERROR].includes(err.name)) {
         next(new BadRequestError(err.message));
@@ -59,11 +61,11 @@ module.exports.registerUser = (req, res, next) => {
     .then((hash) => User.create({
       name, email, password: hash,
     }).then((user) => {
-      res.status(201).send(user);
+      res.status(CREATED_STATUS_CODE).send(user);
     }))
     .catch((err) => {
-      if (err.code === 11000) {
-        next(new ConflictError('Такой пользователь уже существует'));
+      if (err.code === DUPLICATE_USER_ERROR_CODE) {
+        next(new ConflictError(DUPLICATE_USER_ERROR_MESSAGE));
       }
       if (err.name === VALIDATION_ERROR) {
         next(new BadRequestError(err.message));
@@ -76,13 +78,13 @@ module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findOne({ email }).select('+password')
     .then((user) => {
-      if (!user) throw new AuthError('Неправильная почта или пароль');
+      if (!user) throw new AuthError(WRONG_CREDENTIALS_ERROR_MESSAGE);
       bcrypt.compare(password, user.password)
         .then((isValidPassword) => {
-          if (!isValidPassword) return next(new BadRequestError('Неправильная почта или пароль'));
+          if (!isValidPassword) return next(new BadRequestError(WRONG_CREDENTIALS_ERROR_MESSAGE));
           const token = getJwtToken(user._id);
-          res.cookie('jwt', token, {
-            maxAge: 604800,
+          res.cookie(JWT_COOKIE_NAME, token, {
+            maxAge: JWT_DURATION_SECONDS,
             httpOnly: true,
           });
           return res.send(user);
@@ -92,5 +94,5 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.logout = (req, res, next) => {
-  User.findById(req.user.id).then(() => res.clearCookie('jwt').end()).catch(next);
+  User.findById(req.user.id).then(() => res.clearCookie(JWT_COOKIE_NAME).end()).catch(next);
 };

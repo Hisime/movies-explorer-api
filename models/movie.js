@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const { PATTERN_LINK } = require('../utils/utils');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -29,7 +30,7 @@ const movieSchema = new mongoose.Schema({
       validator: (v) => validator.isURL(v),
       message: 'Некорректный URL',
     },
-    pattern: [/^https?:\/\/(?:www\.)?[a-zA-Z0-9а-яА-Я-._~:/?#[\]@!$&'()*+,;=]+/im, 'Некорректный URL'],
+    pattern: [PATTERN_LINK, 'Некорректный URL'],
   },
   trailerLink: {
     type: String,
@@ -38,7 +39,7 @@ const movieSchema = new mongoose.Schema({
       validator: (v) => validator.isURL(v),
       message: 'Некорректный URL',
     },
-    pattern: [/^https?:\/\/(?:www\.)?[a-zA-Z0-9а-яА-Я-._~:/?#[\]@!$&'()*+,;=]+/im, 'Некорректный URL'],
+    pattern: [PATTERN_LINK, 'Некорректный URL'],
   },
   thumbnail: {
     type: String,
@@ -47,7 +48,7 @@ const movieSchema = new mongoose.Schema({
       validator: (v) => validator.isURL(v),
       message: 'Некорректный URL',
     },
-    pattern: [/^https?:\/\/(?:www\.)?[a-zA-Z0-9а-яА-Я-._~:/?#[\]@!$&'()*+,;=]+/im, 'Некорректный URL'],
+    pattern: [PATTERN_LINK, 'Некорректный URL'],
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,

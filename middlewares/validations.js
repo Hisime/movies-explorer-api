@@ -1,15 +1,16 @@
 const { Joi, celebrate } = require('celebrate');
+const { PATTERN_EMAIL, PATTERN_LINK } = require('../utils/utils');
 
 module.exports.validateLogin = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().pattern(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/),
+    email: Joi.string().required().pattern(PATTERN_EMAIL),
     password: Joi.string().required(),
   }),
 });
 
 module.exports.validateRegister = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().pattern(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/),
+    email: Joi.string().required().pattern(PATTERN_EMAIL),
     password: Joi.string().required(),
     name: Joi.string().min(2).max(30),
   }),
@@ -17,17 +18,17 @@ module.exports.validateRegister = celebrate({
 
 module.exports.validateAddMovie = celebrate({
   body: Joi.object().keys({
-    link: Joi.string().required().pattern(/^https?:\/\/(?:www\.)?[a-zA-Z0-9а-яА-Я-._~:/?#[\]@!$&'()*+,;=]+/im),
+    link: Joi.string().required().pattern(PATTERN_LINK),
     country: Joi.string().required(),
     director: Joi.string().required(),
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().required().pattern(/^https?:\/\/(?:www\.)?[a-zA-Z0-9а-яА-Я-._~:/?#[\]@!$&'()*+,;=]+/im),
-    trailerLink: Joi.string().required().pattern(/^https?:\/\/(?:www\.)?[a-zA-Z0-9а-яА-Я-._~:/?#[\]@!$&'()*+,;=]+/im),
+    image: Joi.string().required().pattern(PATTERN_LINK),
+    trailerLink: Joi.string().required().pattern(PATTERN_LINK),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
-    thumbnail: Joi.string().required().pattern(/^https?:\/\/(?:www\.)?[a-zA-Z0-9а-яА-Я-._~:/?#[\]@!$&'()*+,;=]+/im),
+    thumbnail: Joi.string().required().pattern(PATTERN_LINK),
     movieId: Joi.number().required(),
   }),
 });
@@ -40,7 +41,7 @@ module.exports.validateDeleteMovie = celebrate({
 
 module.exports.validateUpdateProfile = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().pattern(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/),
+    email: Joi.string().pattern(PATTERN_EMAIL),
     mame: Joi.string().min(2).max(30),
   }),
 });

@@ -1,13 +1,16 @@
 const Movie = require('../models/movie');
 const {
   VALIDATION_ERROR,
-  INVALID_ID_ERROR, SUCCESSES_STATUS_CODE,
+  INVALID_ID_ERROR,
+  CREATED_STATUS_CODE,
+  MOVIE_NOT_FOUND_ERROR_MESSAGE,
+  MOVIE_DELETE_OWNER_ERROR_MESSAGE,
+  MOVIE_DELETE_OWNER_ERROR_CODE,
+  NOT_VALID_ID_ERROR_MESSAGE,
 } = require('../utils/utils');
 const BadRequestError = require('../errors/bad-request-err');
 const NotFoundError = require('../errors/not-found-err');
 const ForbiddenError = require('../errors/forbidden-err');
-
-const MOVIE_NOT_FOUND_ERROR_MESSAGE = 'Запрашиваемый фильм не найден';
 
 module.exports.getMovies = (req, res, next) => {
   Movie.find({ owner: req.user.id })
@@ -31,7 +34,7 @@ module.exports.addMovie = (req, res, next) => {
     owner: req.user.id,
   };
   Movie.create(data)
-    .then((movie) => res.status(SUCCESSES_STATUS_CODE).send(movie))
+    .then((movie) => res.status(CREATED_STATUS_CODE).send(movie))
     .catch((err) => {
       if ([VALIDATION_ERROR, INVALID_ID_ERROR].includes(err.name)) {
         next(new BadRequestError(err.message));
@@ -46,22 +49,22 @@ module.exports.deleteMovie = (req, res, next) => {
   const userId = req.user.id;
   Movie.findById(movieId)
     .populate('owner')
-    .orFail(new Error('NotValidId'))
+    .orFail(new Error(NOT_VALID_ID_ERROR_MESSAGE))
     .then((movie) => {
       if (userId === movie.owner.id.toString()) {
         Movie.findByIdAndRemove(movieId)
           .then((removedMovie) => res.send(removedMovie));
       } else {
-        throw new Error('MovieOwnerError');
+        throw new Error(MOVIE_DELETE_OWNER_ERROR_CODE);
       }
     })
     .catch((err) => {
-      if (err.message === 'NotValidId') {
+      if (err.message === NOT_VALID_ID_ERROR_MESSAGE) {
         next(new NotFoundError(MOVIE_NOT_FOUND_ERROR_MESSAGE));
       } else if (err.name === INVALID_ID_ERROR) {
         next(new BadRequestError(err.message));
-      } else if (err.message === 'MovieOwnerError') {
-        next(new ForbiddenError('Удаление чужого фильма недоступно'));
+      } else if (err.message === MOVIE_DELETE_OWNER_ERROR_CODE) {
+        next(new ForbiddenError(MOVIE_DELETE_OWNER_ERROR_MESSAGE));
       } else {
         next(err);
       }

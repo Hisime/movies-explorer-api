@@ -1,3 +1,6 @@
 const jwt = require('jsonwebtoken');
+const { PRODUCTION_ENV_NAME, DEV_SECRET, JWT_DURATION } = require('./utils');
 
-module.exports.getJwtToken = (id) => jwt.sign({ id }, process.env.NODE_ENV === 'production' ? process.env.JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
+module.exports.getJwtToken = (id) => jwt.sign({ id }, process.env.NODE_ENV === PRODUCTION_ENV_NAME
+  ? process.env.JWT_SECRET
+  : DEV_SECRET, { expiresIn: JWT_DURATION });
