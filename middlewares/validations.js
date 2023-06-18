@@ -42,6 +42,6 @@ module.exports.validateDeleteMovie = celebrate({
 module.exports.validateUpdateProfile = celebrate({
   body: Joi.object().keys({
     email: Joi.string().pattern(PATTERN_EMAIL),
-    mame: Joi.string().min(2).max(30),
+    name: Joi.string().min(2).max(30),
   }),
 });
