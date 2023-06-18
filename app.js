@@ -28,11 +28,11 @@ app.use(cors({
 }));
 app.use(helmet());
 mongoose.connect(DB_ADDRESS);
+app.use(requestLogger);
 app.use(rateLimiter);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
-app.use(requestLogger);
 app.use(router);
 app.use(errorLogger);
 app.use(errors());
