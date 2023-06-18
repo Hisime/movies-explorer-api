@@ -18,7 +18,6 @@ module.exports.validateRegister = celebrate({
 
 module.exports.validateAddMovie = celebrate({
   body: Joi.object().keys({
-    link: Joi.string().required().pattern(PATTERN_LINK),
     country: Joi.string().required(),
     director: Joi.string().required(),
     duration: Joi.number().required(),
